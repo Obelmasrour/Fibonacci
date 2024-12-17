@@ -6,8 +6,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<FibonacciDataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddTransient<Fibonacci>();
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.MapGet("/", () => "Hello World 2!");
 
@@ -23,4 +32,4 @@ app.Run();
 [JsonSerializable(typeof(List<FibonacciResult>))]
 internal partial class FibonacciContext : JsonSerializerContext
 {
-} 
+}
